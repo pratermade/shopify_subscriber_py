@@ -1,4 +1,10 @@
-
+"""Manages the templates in the aws ses services
+    must have templates in the "templates" direct named the same as the template specifed
+    for example, if you specified "salted" as the template name, we expect to find:
+        salted.html
+        salted.txt
+    in the "templates" directory
+"""
 import boto3
 import sys
 import os
@@ -20,7 +26,15 @@ class ManageTemplates(cli.Application):
 @ManageTemplates.subcommand("update")
 class UpdateTemplate(cli.Application):
     DESCRIPTION = "update the template on aws"
-    def main(self, templatename):
+    def main(self, templatename: str) -> int:
+        """updates the specifed template
+
+        Args:
+            templatename (str): the template to update
+
+        Returns:
+            int: return code
+        """
         html_path = os.path.join('..', 'templates', "{}.html".format(templatename))
         text_path = os.path.join('..', 'templates', "{}.txt".format(templatename))
         if not check_files(html_path, text_path):
@@ -47,7 +61,15 @@ class UpdateTemplate(cli.Application):
 @ManageTemplates.subcommand("add")
 class AddTemplate(cli.Application):
     DESCRIPTION = "add a new template on aws"
-    def main(self, templatename):
+    def main(self, templatename: str) -> int:
+        """Adds a new template to AWS ses services
+
+        Args:
+            templatename (str): the name of the template to add
+
+        Returns:
+            int: retrun code
+        """
         html_path = os.path.join('..', 'templates', "{}.html".format(templatename))
         text_path = os.path.join('..', 'templates', "{}.txt".format(templatename))
         if not check_files(html_path, text_path):
@@ -73,6 +95,15 @@ class AddTemplate(cli.Application):
 
 
 def check_files(html_path: str, text_path: str) -> bool:
+    """checks to see if all the needed files are present in the template directory
+
+    Args:
+        html_path (str): path to the *.html file
+        text_path (str): path to the *.txt file
+
+    Returns:
+        bool: true if the files are all present
+    """
     if os.path.isfile(text_path) and os.path.isfile(html_path):
         return True
     if not os.path.isfile(html_path):
