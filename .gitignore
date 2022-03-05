@@ -128,3 +128,4 @@ dmypy.json
 # Pyre type checker
 .pyre/
 shopify_subscriber.zip
+deployment/

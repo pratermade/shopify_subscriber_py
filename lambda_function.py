@@ -6,17 +6,22 @@ Receives notification from shopify when a new subscriber signs up and sends an e
 
 import logging
 import boto3
-from jinja2 import Environment, PackageLoader, select_autoescape
+import json
+import os
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
+VERSION = "0.1.0"
 
 def lambda_handler(event: dict, context):
     """
     
     """
     logger.info('Event: %s', event)
+    data = get_data()
 
+    send_email(event['email'], os.environ['from_addr'], os.environ['template'], data)
+    
     result = "new customer {} signed up".format(event['email'])
 
     logger.info(result)
@@ -25,5 +30,29 @@ def lambda_handler(event: dict, context):
     return response
 
 
-def send_email(email: str):
-    pass
+def get_data():
+    data = {
+        "content": "This is a test"
+    }
+    return json.dumps(data)
+
+
+def send_email(emailto: str,emailfrom: str, template: str, data: dict):
+    ses = boto3.client('ses')
+
+    response = ses.send_templated_email(
+    Source=emailfrom,
+    Destination={
+        'ToAddresses': [
+        emailto,
+        ],
+        'CcAddresses': []
+    },
+    ReplyToAddresses=[
+        emailfrom,
+    ],
+    Template=template,
+    TemplateData=data
+    )
+
+    print(response)
