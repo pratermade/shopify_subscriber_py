@@ -24,6 +24,7 @@ def lambda_handler(event: dict, context) -> dict:
         dict: response dictionary
     """
     logger.info('Event: %s', event)
+    event = event['detail']['payload'] # because eventbridge does it different
     data = get_data()
     send_email(event['email'], os.environ['from_addr'], os.environ['template'], data)   
     result = "new customer {} signed up".format(event['email'])
