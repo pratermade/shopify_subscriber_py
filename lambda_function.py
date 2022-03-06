@@ -9,6 +9,7 @@ import boto3
 import json
 import os
 
+
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 VERSION = "0.1.0"
@@ -25,7 +26,7 @@ def lambda_handler(event: dict, context) -> dict:
     """
     logger.info('Event: %s', event)
     event = event['detail']['payload'] # because eventbridge does it different
-    data = get_data()
+    data = get_data(event['email'])
     send_email(event['email'], os.environ['from_addr'], os.environ['template'], data)   
     result = "new customer {} signed up".format(event['email'])
     logger.info(result)
@@ -33,15 +34,19 @@ def lambda_handler(event: dict, context) -> dict:
     return response
 
 
-def get_data() -> str:
+def get_data(email: str) -> str:
     """builds the data dict up for the email template
+
+    Args:
+        email (str): users email address
 
     Returns:
         str: the data for the email template substitution, converted to a json string
     """
     data = {
         "content": "This is a test",
-        "discount_code": generate_code()
+        "discount_code": os.environ['DISCOUNT_CODE'],
+        "username": email,
     }
     return json.dumps(data)
 
@@ -74,11 +79,3 @@ def send_email(emailto: str, emailfrom: str, template: str, data: dict):
 
     print(response)
 
-def generate_code() -> str:
-    """contact the shopify api and generate a discount code to use in the email
-
-    Returns:
-        str: discount code
-    """
-    # generate a discount code for the user in shopify
-    return "AERV13"

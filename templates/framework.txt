@@ -1,3 +1,11 @@
-{{content}}
+
+Thank you for being a subscriber to TheMindfulRealm.com.
+
+As a thanks for signing up, have a special one time deal. Dont' wait, the offer is only available for a limited time!
+
+Discount Code: {{discount_code}}
+
+Get your 20% off here: https://shop.themindfulrealm.com
+
 
 
