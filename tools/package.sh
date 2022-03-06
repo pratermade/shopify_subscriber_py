@@ -4,8 +4,8 @@ pwd
 rm -rf deployment
 rm shopify_subscriber.zip
 mkdir deployment
+pip install -r requirements.txt --target deployment
 cd deployment
-pip install -r ../requirements.txt --target package
 cp ../lambda_function.py .
 zip -r ../shopify_subscriber.zip .
 cd ..

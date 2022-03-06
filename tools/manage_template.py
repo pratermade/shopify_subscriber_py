@@ -50,7 +50,7 @@ class UpdateTemplate(cli.Application):
         response = ses.update_template(
             Template = {
                 'TemplateName' : templatename,
-                'SubjectPart'  : 'Welcome to the club',
+                'SubjectPart'  : 'Thank you for subscribing',
                 'TextPart'     : text_contents,
                 'HtmlPart'     : html_contents
             }
@@ -85,7 +85,7 @@ class AddTemplate(cli.Application):
         response = ses.create_template(
             Template = {
                 'TemplateName' : templatename,
-                'SubjectPart'  : 'Welcome to the club',
+                'SubjectPart'  : 'Thank you for subscribing',
                 'TextPart'     : text_contents,
                 'HtmlPart'     : html_contents
             }
